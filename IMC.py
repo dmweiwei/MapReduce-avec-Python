@@ -1,8 +1,4 @@
-import os
-import re
-
 import mrs
-import csv
 
 
 class Normalisation(mrs.MapReduce):
@@ -17,17 +13,22 @@ class Normalisation(mrs.MapReduce):
         height_cm = row[2]
         weight_kg = row[3]
         sex = row[4]
-        print "age", age, "weight", weight_kg, "height", height_cm
+        # print "age", age, "weight", weight_kg, "height", height_cm
         if age.isdigit() and age > 18:
             imc = self.imc(weight_kg, height_cm)
             yield sex, imc
 
     def reduce(self, key, values):
         value_list = list(values)
-        yield sum(value_list)/len(value_list), min(value_list), max(value_list)
+        yield sum(value_list)/len(value_list)
+        yield min(value_list)
+        yield max(value_list)
 
     def imc(self, weight_kg, height_cm):
-        imc = int(weight_kg)/(int(height_cm)/100)**2
+        weight = float(weight_kg)
+        height = float(height_cm)/100
+        height_carre = height * height
+        imc = weight/height_carre
         return imc
 
 
