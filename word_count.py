@@ -16,7 +16,8 @@ class WordCount(mrs.MapReduce):
         return job.file_data(file_list)
 
     def map(self, key, value):
-        wordlist = re.split('\W+', value)
+        # wordlist = re.split('\W+', value)
+        wordlist = re.split('[^a-zA-Z]+', value)
         for word in wordlist: # value.split():
             word = word.strip()
             if word:
