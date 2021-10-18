@@ -14,9 +14,10 @@ class Normalisation(mrs.MapReduce):
         weight_kg = row[3]
         sex = row[4]
         # print "age", age, "weight", weight_kg, "height", height_cm
-        if age.isdigit() and age > 18:
-            imc = self.imc(weight_kg, height_cm)
-            yield sex, imc
+        if age != '"age"':
+            if int(age) >= 18:
+                imc = self.imc(weight_kg, height_cm)
+                yield sex, imc
 
     def reduce(self, key, values):
         value_list = list(values)
